@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Diagrama de Pareto</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="lib/animate/animate.min.css" rel="stylesheet">
+  <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <!-- Jquery -->
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+   <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+   <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+
+   <!--Data Table-->
+   <script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+   <script type="text/javascript"  src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+
+   <!--Export table buttons-->
+   <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+   <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js" ></script>
+   <script type="text/javascript"  src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+   <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json"></script>
+   
+
+<!--Export table button CSS-->
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+
+</head>
+<body>
+    
+              <br><br><br><br><br><br><br><br>
+            <div class="container">
+                    <div class="title-box-d">
+                      <h3 class="title-d">Dados de Análise</h3>
+                      
+                    </div>
+                    <h1 class="title-d">Inclua os dados na tabela para gerar o gráfico</h1>
+            </div>
+            <div class="container">
+            <div class="form-group">
+            <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                Unidade
+                                <input type="text" id="unidade" name="unidade" class="form-control form-control-lg form-control-a">
+                              </div>
+                            </div>  
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  Título do Pareto
+                                  <input type="text" id="titulo" name="titulo" class="form-control form-control-lg form-control-a">
+                                </div>
+                              </div> 
+                                <div class="col-md-6">
+                                        <div class="form-group">
+                                          Valor
+                                          <input type="text" id="valor" name="valor" class="form-control form-control-lg form-control-a">
+                                        </div>
+                                      </div>  
+                                      <div class="col-md-6">
+                                          <div class="form-group">
+                                            Item
+                                            <input type="text" id="item" name="item" class="form-control form-control-lg form-control-a" data-rule="minlen:4" data-msg="Deve conter no mínimo 4 caracteres">
+                                            <div class="validation"></div>
+                                          </div>
+                                        </div>    
+                    </div>
+                    <button class="btn btn-b" onclick="adicionaLinha()">Adicionar linha </button> 
+                    <br><br><br>
+            <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="table">
+                        
+                        <th>Valor</th>
+                        <th>Item</th>
+                        <th>Ação</th>
+                      </table>
+                      </div>
+                      <br><br><br>
+                      
+                      <a id ="pareto" class="btn btn-b" href="pareto.html">Gerar gráfico</a>
+                      <script>
+                        $(document).ready(function () {
+                          $('#pareto').click(function(){
+                          var itens = [];
+                          var valores =[];
+                          var unidades = [];
+                          var row = [];
+                          var table = document.getElementById('table');
+                          console.log(table.rows.length)
+                          // Cycle through each of the table body's rows
+                          $('tbody tr').each(function(index, tr) {
+                              var tds = $(tr).find('td');
+                              // Check we've got two <td>s
+                                  var data = [];
+                                  for (var i =0; i<tds.length - 1; i++){
+                                    if (tds[i].textContent != null){
+                                    
+                                    data.push(tds[i].textContent)
+                                    console.log(tds[i].textContent)
+                                    }
+                                  }
+                                    
+                                row.push(data)
+                                console.log(data);
+                          });
+                          console.log(row)
+                            var dados = JSON.stringify(row);
+                            var titulo = JSON.stringify($("#titulo").val())
+                            var unidade = JSON.stringify($("#unidade").val())
+                            sessionStorage.setItem('titulo', titulo );
+                            sessionStorage.setItem('chave', dados );
+                            sessionStorage.setItem('unidade', unidade );
+                            console.log('pareto ' + dados)  
+                          })
+                        })
+                        </script>
+                        <script>
+                            //Funcao adiciona uma nova linha na tabela
+                            
+                            function adicionaLinha() {
+                              const table = $("#table")
+                                const item = $("#item").val();
+                                const valor = $("#valor").val(); 
+                                const appendItem = '<tr><td> '+ valor +' </td>'
+                                const appendValor= '<td> '+ item +' </td>'
+                                const appendButton = "<td><button class='btn btn-b'onclick='removeLinha(this)'>Remover</button></td></tr>";
+                                const append = appendItem + appendValor +  appendButton;
+                                table.append(append)
+                                
+                                
+                            }
+                            
+                            // funcao remove uma linha da tabela
+                            function removeLinha(linha) {
+                              var i=linha.parentNode.parentNode.rowIndex;
+                              document.getElementById('table').deleteRow(i);
+                            }            
+                        </script>  
+                    </div>
+                  </div>
+                  
+    </body>
+</html>
